@@ -29,16 +29,19 @@ fn main() {
         each_price_combination.push(read_and_divide_line());
     }
 
-    let mut min_price = refrigerator_prices[0] * microwave_prices[0];
+    let min_refrigerator_price = {
+        let mut tmp_refrigerator_prices = refrigerator_prices.clone();
+        tmp_refrigerator_prices.sort();
+        tmp_refrigerator_prices[0]
+    };
 
-    for refri_price in &refrigerator_prices {
-        for microwave_price in &microwave_prices {
-            let now_price = refri_price + microwave_price;
-            if now_price < min_price {
-                min_price = now_price;
-            }
-        }
-    }
+    let min_microwave_price = {
+        let mut tmp_microwave_prices = microwave_prices.clone();
+        tmp_microwave_prices.sort();
+        tmp_microwave_prices[0]
+    };
+
+    let mut min_price = min_refrigerator_price + min_microwave_price;
 
     for combination in each_price_combination {
         let now_price = refrigerator_prices[(combination[0] as usize) - 1]
