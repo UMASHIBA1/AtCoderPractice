@@ -11,10 +11,9 @@ fn main() {
 
     let height = input_vec[0];
     let width = input_vec[1];
-    let area = height * width;
-    if area % 2 == 1 {
-        println!("{}", area / 2 + 1);
+    if height == 1 || width == 1 {
+        println!("{}", 1);
     } else {
-        println!("{}", area / 2);
+        println!("{}", (width * height + 1) / 2);
     }
 }
