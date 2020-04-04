@@ -28,27 +28,29 @@ fn main() {
     let total_vote_num = {
         let mut total: i64 = 0;
         for i in &vote_nums {
-            total = &total + i;
+            total = total + i;
         }
         total
     };
 
-    println!("total: {}", &total_vote_num);
+    let judge_line_num = total_vote_num as f64 / (4 * popular_product_num) as f64;
 
-    let judge_line_num = &total_vote_num / (4 * &popular_product_num);
-
-    println!("jduge: {}", &judge_line_num);
     vote_nums.sort_by(|a, b| b.cmp(a));
 
-    for i in &vote_nums {
-        println!("{}", i);
-    }
+    // for i in &vote_nums {
+    //     println!("{}", i);
+    // }
 
     let popular_product_votes: Vec<i64> = vote_nums[..(popular_product_num as usize)].to_vec();
 
+    // println!("productVotes");
+    // for i in &popular_product_votes {
+    //     println!("{}", i);
+    // }
+
     let mut is_yes = true;
     for i in &popular_product_votes {
-        if i < &judge_line_num {
+        if (*i as f64) < judge_line_num {
             is_yes = false;
         }
     }
