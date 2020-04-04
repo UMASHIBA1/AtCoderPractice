@@ -1,3 +1,4 @@
+use std::cmp;
 use std::io;
 
 fn main() {
@@ -14,20 +15,7 @@ fn main() {
     // 計算時間短縮の為、n/kの余りを計算
     n = n % k;
 
-    let mut min_n: i64 = n;
+    let abs: i64 = (n - k).abs();
 
-    loop {
-        let abs: i64 = (n - k).abs();
-        if abs == 0 {
-            min_n = abs;
-            break;
-        } else if abs == min_n {
-            break;
-        } else if abs < n {
-            min_n = abs;
-        }
-        n = abs;
-    }
-
-    println!("{}", min_n);
+    println!("{}", cmp::min::<i64>(n, abs));
 }
