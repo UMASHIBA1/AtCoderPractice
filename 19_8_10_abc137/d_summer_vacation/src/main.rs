@@ -15,11 +15,7 @@ fn main() {
     let n: i64 = line_one_iter.next().unwrap().parse().unwrap();
     let m: i64 = line_one_iter.next().unwrap().parse().unwrap();
 
-    let mut part_time_jobs_list: Vec<BinaryHeap<i64>> = Vec::new(); //part_time_jobs_list[0] = 残り日数1日のキュー
-    for _ in 0..(m - 1) {
-        let queue: BinaryHeap<i64> = BinaryHeap::new();
-        part_time_jobs_list.push(queue);
-    }
+    let mut part_time_jobs_list: Vec<PartTimeJob> = Vec::new();
 
     for _ in 0..n {
         let mut buf = String::new();
@@ -29,27 +25,28 @@ fn main() {
 
         let a: i64 = iter.next().unwrap().parse().unwrap();
         let b: i64 = iter.next().unwrap().parse().unwrap();
-        println!("a: {}", a);
-        println!("b: {}", b);
 
         let part_time_job = PartTimeJob { a: a, b: b };
 
-        for i in 1..m {
-            if part_time_job.a <= i {
-                part_time_jobs_list[(i - 1) as usize].push(part_time_job.b);
-            }
-        }
+        part_time_jobs_list.push(part_time_job);
     }
 
-    let mut total_salary: i64 = 0;
+    let mut total_salary = 0;
+    let mut days_left = 1;
+    let mut primary_queue: BinaryHeap<i64> = BinaryHeap::new();
 
-    for i in &mut part_time_jobs_list {
-        if !i.is_empty() {
-            total_salary += &i.pop().unwrap();
+    for _ in 0..m {
+        for job in &part_time_jobs_list {
+            if job.a <= days_left && job.a > days_left - 1 {
+                primary_queue.push(job.b);
+            }
         }
+        if !primary_queue.is_empty() {
+            let salary = primary_queue.pop().unwrap();
+            total_salary += salary
+        }
+        days_left += 1;
     }
 
     println!("{}", total_salary);
-
-    // part_time_jobs_list.sort_by(|a, b| a.b.cmp(&b.b));
 }
