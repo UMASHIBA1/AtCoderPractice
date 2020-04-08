@@ -30,20 +30,21 @@ fn main() {
 
         part_time_jobs_list.push(part_time_job);
     }
+    part_time_jobs_list.sort_by(|a, b| a.a.cmp(&b.a));
 
     let mut total_salary = 0;
     let mut days_left = 1;
     let mut primary_queue: BinaryHeap<i64> = BinaryHeap::new();
+    let mut loop_count: usize = 0;
 
     for _ in 0..m {
-        for job in &part_time_jobs_list {
-            if job.a <= days_left && job.a > days_left - 1 {
-                primary_queue.push(job.b);
-            }
+        while (loop_count as i64) < n && part_time_jobs_list[loop_count].a <= days_left {
+            primary_queue.push(part_time_jobs_list[loop_count].b);
+            loop_count += 1;
         }
-        if !primary_queue.is_empty() {
-            let salary = primary_queue.pop().unwrap();
-            total_salary += salary
+
+        if let Some(salary) = primary_queue.pop() {
+            total_salary += salary;
         }
         days_left += 1;
     }
