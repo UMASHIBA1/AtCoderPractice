@@ -5,29 +5,39 @@ fn main() {
     io::stdin().read_line(&mut buf).unwrap();
 
     let n: usize = buf.trim().parse().unwrap();
-    let s: Vec<String> = {
+    let s: Vec<char> = {
         buf = String::new();
         io::stdin().read_line(&mut buf).unwrap();
-        buf.trim().chars().map(|c| c.to_string()).collect()
+        buf.trim().chars().collect()
     };
 
-    let mut count = 0;
+    let mut r_count = 0;
+    let mut g_count = 0;
+    let mut b_count = 0;
 
     for i in 0..n {
-        for j in i + 1..n {
-            if s[i] != s[j] {
-                let sub_j_i = j - i;
-                for k in j + 1..n {
-                    if s[i] != s[k] && s[j] != s[k] {
-                        let sub_k_j = k - j;
-                        if sub_k_j != sub_j_i {
-                            count += 1;
-                        }
-                    }
-                }
-            }
+        match s[i] {
+            'R' => r_count += 1,
+            'G' => g_count += 1,
+            'B' => b_count += 1,
+            _ => (),
         }
     }
 
-    println!("{}", count);
+    let count = r_count * g_count * b_count;
+
+    let mut minus_count = 0;
+    for i in 0..n {
+        let mut j = i + 1;
+        let mut k = i + 2;
+        while k < n {
+            if s[i] != s[j] && s[j] != s[k] && s[i] != s[k] {
+                minus_count += 1;
+            }
+            j += 1;
+            k = j + (j - i);
+        }
+    }
+
+    println!("{}", count - minus_count);
 }
