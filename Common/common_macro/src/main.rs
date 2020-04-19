@@ -50,5 +50,5 @@ macro_rules! input {
 }
 
 fn main() {
-    input!();
+    input! {};
 }
